@@ -1,0 +1,13 @@
+{
+  "name": "kindle-pusher",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "devDependencies": {
+    "netlify-cli": "^2.19.4"
+  },
+  "workspaces": ["packages/*"]
+}
