@@ -1,6 +1,6 @@
 import { RouteConfig } from "vue-router";
-import home from "../../home.vue";
-import login from "../../login.vue";
+import home from "../../pages/home/index.vue";
+import loginCallback from '../../pages/login/callback/index.vue';
 
 export const routes = [
   {
@@ -8,7 +8,7 @@ export const routes = [
     component: home,
   },
   {
-    path: '/login',
-    component: login,
+    path: '/login/callback',
+    component: loginCallback,
   }
 ] as RouteConfig[];
