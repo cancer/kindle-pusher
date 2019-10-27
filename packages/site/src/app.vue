@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-  console.log('Hello World')
   export default {
+    setup() {}
   }
 </script>
