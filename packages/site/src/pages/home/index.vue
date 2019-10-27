@@ -13,7 +13,6 @@
           let user: any;
           try {
             user = await client.getUser();
-            console.log(user);
           } catch(e) {
             throw e;
           }
