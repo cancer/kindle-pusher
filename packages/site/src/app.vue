@@ -1,5 +1,5 @@
-<template functional>
-  <p>Hello World</p>
+<template>
+    <router-view></router-view>
 </template>
 
 <script lang="ts">
