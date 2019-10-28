@@ -48,7 +48,7 @@ export const handleUsersGet = async (event: APIGatewayEvent) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        user: user.data,
+        user: null,
       }),
     }
   } catch(e) {
