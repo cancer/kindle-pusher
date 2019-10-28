@@ -2,15 +2,20 @@
 </template>
 
 <script lang="ts">
-    import { onMounted } from "@vue/composition-api";
-    import { createAuthClient } from "../../../shared/auth-client";
+  import { onMounted } from "@vue/composition-api";
+  import { createUser } from './create-user';
+  import { handleRedirect } from './handle-redirect';
 
-    export default {
+  export default {
       setup() {
         onMounted(async () => {
-          const client = await createAuthClient();
-          await client.handleRedirectCallback();
-          window.location.assign(window.location.origin)
+          try {
+            await handleRedirect();
+            await createUser();
+            //window.location.assign(window.location.origin)
+          } catch(e) {
+            throw e;
+          }
         })
       }
     }

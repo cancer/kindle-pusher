@@ -4,11 +4,17 @@
   "description": "",
   "scripts": {
     "build": "yarn workspace @kindle-pusher/site run build",
+    "dev:site": "yarn workspace @kindle-pusher/site start",
+    "dev:fundtions": "yarn workspace @kindle-pusher/functions build",
+    "start": "run-p dev:*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,
   "devDependencies": {
-    "netlify-cli": "^2.19.4"
+    "netlify-cli": "^2.19.4",
+    "npm-run-all": "^4.1.5"
   },
-  "workspaces": ["packages/*"]
+  "workspaces": [
+    "packages/*"
+  ]
 }

@@ -1,0 +1,11 @@
+[build]
+  publish = "packages/site/dist"
+  functions = "packages/functions/src"
+  build = "yarn build"
+
+[dev]
+  command = "yarn start"
+  port = 1234
+  targetPort = 3000
+  publish = "packages/site/dist"
+  functions = "packages/functions/dist"
