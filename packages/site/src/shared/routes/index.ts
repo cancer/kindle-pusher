@@ -2,6 +2,7 @@ import { RouteConfig } from "vue-router";
 import home from "../../pages/home/index.vue";
 import loginCallback from '../../pages/login/callback/index.vue';
 import settings from '../../pages/settings/index.vue';
+import books from '../../pages/books/index.vue';
 
 export const routes = [
   {
@@ -11,9 +12,13 @@ export const routes = [
   {
     path: '/login/callback',
     component: loginCallback,
-  }
+  },
   {
-    path: '/settings/',
+    path: '/settings',
     component: settings,
+  },
+  {
+    path: '/books',
+    component: books,
   }
 ] as RouteConfig[];
