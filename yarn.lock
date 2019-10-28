@@ -1724,6 +1724,7 @@ btoa-lite@^1.0.0:
 buefy@^0.8.6:
   version "0.8.6"
   resolved "https://registry.yarnpkg.com/buefy/-/buefy-0.8.6.tgz#a8d7e570914b95d8d5aadc40f87bcdfbaf552f0e"
+  integrity sha512-7woxrdwANcnJbe7lofPxkJLGRRGIVwFXOo0kzEpiNB6alQj18NV6UrdAKse+LWCOADz+AeHe5gyc6qdgRjG5mw==
   dependencies:
     bulma "0.7.5"
 
