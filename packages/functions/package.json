@@ -27,6 +27,7 @@
     "typescript": "^3.6.4"
   },
   "dependencies": {
+    "@types/cookie": "^0.3.3",
     "cookie": "^0.4.0",
     "faunadb": "^2.9.3",
     "inversify": "^5.0.1",

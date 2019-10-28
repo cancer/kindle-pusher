@@ -1,4 +1,5 @@
 import { APIGatewayEvent } from "aws-lambda";
+import { parse } from "cookie";
 import { query, values } from "faunadb";
 import { makeAuthToken } from "../../domains/auth-token";
 import { AuthToken } from "../../domains/auth-token/auth-token";
@@ -15,10 +16,11 @@ export interface UserDocument {
 export const handleUsersGet = async (event: APIGatewayEvent) => {
   let authToken: AuthToken;
   try {
-    if (event.queryStringParameters === null) {
+    if (event.headers['cookie'] === null) {
       throw new Error('Authorization required.')
     }
-    authToken = await makeAuthToken(event.queryStringParameters.authorization)
+    const token = parse(event.headers['cookie']).token;
+    authToken = await makeAuthToken(token);
   } catch(e) {
     return makeErrorResponse(401, e);
   }
