@@ -9,10 +9,6 @@ if (typeof process.env.AUTH0_CLIENT_ID === 'undefined') {
   throw new Error('Missing AUTH0_CLIENT_ID in env.');
 }
 
-if (typeof process.env.AUTH0_REDIRECT_URI === 'undefined') {
-  throw new Error('Missing AUTH0_REDIRECT_URI in env.');
-}
-
 const createAuthClientCreator = (domain: string, clientId: string, redirectUri: string): () => Promise<Auth0Client> => {
   let client: Auth0Client | null = null;
   
@@ -31,4 +27,4 @@ const createAuthClientCreator = (domain: string, clientId: string, redirectUri: 
   }
 }
 
-export const createAuthClient = createAuthClientCreator(process.env.AUTH0_DOMAIN, process.env.AUTH0_CLIENT_ID, process.env.AUTH0_REDIRECT_URI);
+export const createAuthClient = createAuthClientCreator(process.env.AUTH0_DOMAIN, process.env.AUTH0_CLIENT_ID, `${window.location.origin}/login/callback`);
