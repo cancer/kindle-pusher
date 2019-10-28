@@ -33,18 +33,18 @@ export const handleUsersGet = async (event: APIGatewayEvent) => {
   const userRef = query.Match(query.Index('all_users'), authToken.id);
   
   try {
-    //const exists = await client.query<boolean>(query.Exists(userRef));
-    //console.log(exists)
-    //if (!exists) {
-    //  return {
-    //    statusCode: 200,
-    //    body: JSON.stringify({
-    //      user: null,
-    //    }),
-    //  };
-    //}
-    //
-    //const user = await client.query<values.Document<UserDocument>>(query.Get(userRef));
+    const exists = await client.query<boolean>(query.Exists(userRef));
+    console.log(exists)
+    if (!exists) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          user: null,
+        }),
+      };
+    }
+    
+    const user = await client.query<values.Document<UserDocument>>(query.Get(userRef));
     return {
       statusCode: 200,
       body: JSON.stringify({
