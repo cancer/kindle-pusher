@@ -30,7 +30,7 @@ export const handleUsersGet = async (event: APIGatewayEvent) => {
   }
   
   const client = container.get(FaunadbProvider).provide();
-  const userRef = query.Match(query.Index('users_by_id'), authToken.id);
+  const userRef = query.Match(query.Index('all_users'), authToken.id);
   
   try {
     const exists = await client.query<boolean>(query.Exists(userRef));
