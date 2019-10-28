@@ -2,16 +2,10 @@
   <b-menu class="SideMenu">
     <b-menu-list>
       <b-menu-item
-        label="本棚（通知をうけるやつ一覧）"
-        icon="bell"
-        tag="router-link"
-        to="/">
-      </b-menu-item>
-      <b-menu-item
-        label="本棚（すべて）"
+        label="本棚"
         icon="th"
         tag="router-link"
-        to="/">
+        to="/books/">
       </b-menu-item>
       <b-menu-item
         label="新しく出た漫画一覧"
