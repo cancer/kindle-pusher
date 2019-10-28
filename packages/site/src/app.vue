@@ -1,33 +1,7 @@
 <template>
   <div class="kp-Main">
-    <div class="kp-Main_Nav">
-      <Nav />
-    </div>
-    <div class="kp-Main_Menu  has-background-dark">
-      <b-menu>
-        <b-menu-list>
-          <b-menu-item
-            label="本棚（通知をうけるやつ一覧）"
-            icon="bell"
-            tag="router-link"
-            to="/">
-          </b-menu-item>
-          <b-menu-item
-            label="本棚（すべて）"
-            icon="th"
-            tag="router-link"
-            to="/">
-          </b-menu-item>
-          <b-menu-item
-            label="新しく出た漫画一覧"
-            icon="book"
-            tag="router-link"
-            target="_blank"
-            to="https://kindle-newer-book.netlify.com/">
-          </b-menu-item>
-        </b-menu-list>
-      </b-menu>
-    </div>
+    <Nav class="kp-Main_Nav"></Nav>
+    <SideMenu class="kp-Main_Menu"></SideMenu>
     <div class="kp-Main_View">
       <router-view></router-view>
     </div>
@@ -36,22 +10,32 @@
 
 <script lang="ts">
   import Nav from "./components/nav/index.vue";
-  export default {
+  import SideMenu from "./components/side-menu/index.vue";
+  import { createComponent } from "@vue/composition-api";
+
+  export default createComponent({
     components: {
-      Nav
+      Nav,
+      SideMenu
     },
     setup() {
     },
-  }
+  })
 </script>
 
 <style lang="scss">
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
 
+$family-sans-serif: 'Noto Sans JP', sans-serif;
+
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+
+html {
+  font-size: 16px;
+}
 
 html, body {
   height: 100%;
@@ -70,16 +54,6 @@ html, body {
   }
   &_Menu {
     grid-area: menu;
-    padding: 10px;
-    .menu-list a {
-      color: #fff;
-      &:hover {
-        color: #363636;
-      }
-      &.is-active:hover {
-        color: #fff;
-      }
-    }
   }
   &_View {
     grid-area: view;
