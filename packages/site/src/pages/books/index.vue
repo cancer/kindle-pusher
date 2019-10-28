@@ -1,8 +1,10 @@
 <template>
     <ul>
         <li v-for="book in state.books">
-            <img :src="book.productUrl">
-            {{book.title}} / {{book.asin}} / {{book.detailPageUrl}}
+            <img :src="book.productUrl"><br>
+            タイトル: <a :href="book.detailPageUrl">{{book.title}}</a><br>
+            ASIN: {{book.asin}}<br>
+            ブラックリスト: {{book.ignored}}
         </li>
     </ul>
 </template>
