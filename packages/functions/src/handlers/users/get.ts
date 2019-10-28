@@ -6,7 +6,7 @@ import { FaunadbProvider } from "../../shared/faunadb-provider";
 import { container } from "../../shared/inversify.config";
 import { makeErrorResponse } from "../../shared/make-error-response";
 
-interface UserDocument {
+export interface UserDocument {
   auth0Id: string;
   createdAt: string;
   updatedAt: string;

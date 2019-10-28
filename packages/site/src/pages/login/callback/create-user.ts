@@ -1,8 +1,13 @@
 import { usersPostApi } from "../../../shared/apis/users/post";
 
 export const createUser = async () => {
+  const dto = {
+    pushDestination: '',
+    bookShelfApi: '',
+  };
+  
   try {
-    await usersPostApi();
+    await usersPostApi(dto);
   } catch(e) {
     throw e;
   }
