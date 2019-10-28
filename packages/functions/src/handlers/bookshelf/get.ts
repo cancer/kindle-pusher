@@ -4,7 +4,7 @@ import * as path from 'path';
 
 const readFile = (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    fs.readFile(path.resolve('./packages/functions/static/all.json'), 'utf-8', (err, data) => {
+    fs.readFile(path.resolve('./packages/functions/src/static/all.json'), 'utf-8', (err, data) => {
       if (!!err) {
         reject(err);
         return;
