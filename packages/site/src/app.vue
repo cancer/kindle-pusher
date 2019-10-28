@@ -57,7 +57,7 @@ html, body {
   }
   &_View {
     grid-area: view;
-    padding: 10px;
+    padding: 20px;
   }
 }
 </style>
