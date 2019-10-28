@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "yarn workspace @kindle-pusher/site run build",
+    "build": "yarn workspace @kindle-pusher/site run build && yarn workspace @kindle-pusher/functions run build",
     "dev:site": "yarn workspace @kindle-pusher/site start",
     "dev:fundtions": "yarn workspace @kindle-pusher/functions build",
     "start": "run-p dev:*",

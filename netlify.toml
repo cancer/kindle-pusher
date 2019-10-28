@@ -1,6 +1,6 @@
 [build]
   publish = "packages/site/dist"
-  functions = "packages/functions/src"
+  functions = "packages/functions/dist"
   build = "yarn build"
 
 [dev]
