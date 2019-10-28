@@ -1,9 +1,24 @@
 <template>
-    <div>
-        push先登録: <input type="text" @change="updatePushDestination($event)" :value="state.pushDestination">
-        蔵書API登録: <input type="text" @change="updateBookShelfApi($event)" :value="state.bookShelfApi">
-        <button @click="submitSetting()">保存</button>
-    </div>
+  <div>
+
+    <h2 class="title  is-1">設定</h2>
+    <h3 class="subtitle  is-5">新刊通知先の登録や、蔵書APIの登録を行えます</h3>
+
+    <b-field label="Incoming Webhook URL">
+      <b-input type="url" size="is-medium" @change="updatePushDestination($event)" :value="state.pushDestination"></b-input>
+    </b-field>
+
+    <b-field label="蔵書API URL">
+      <b-input type="url" size="is-medium" @change="updateBookShelfApi($event)" :value="state.bookShelfApi"></b-input>
+    </b-field>
+
+    <b-field>
+      <div class="control">
+        <b-button type="is-info" size="is-medium" @click="submitSetting()" :loading="state.isSubmitting">設定を保存する</b-button>
+      </div>
+    </b-field>
+
+  </div>
 </template>
 
 <script lang="ts">
@@ -14,6 +29,7 @@
   interface State {
     pushDestination: string;
     bookShelfApi: string;
+    isSubmitting: boolean;
   }
 
   export default {
@@ -21,6 +37,7 @@
         const state = reactive<State>({
           pushDestination: '',
           bookShelfApi: '',
+          isSubmitting: false,
         });
 
         const updatePushDestination = (event: Event) => {
@@ -38,9 +55,11 @@
         });
 
         const submitSetting = async () => {
+          state.isSubmitting = true;
           await updateUser({
             ...state,
           })
+          state.isSubmitting = false;
         }
 
         return {
