@@ -1,6 +1,11 @@
 import { getToken } from "../../../domains/auth/get-token";
 
-export const usersPostApi = async () => {
+export interface UsersPostDto {
+  pushDestination: string;
+  bookShelfApi: string;
+}
+
+export const usersPostApi = async (dto: UsersPostDto) => {
   const token = await getToken();
   
   try {
@@ -9,6 +14,7 @@ export const usersPostApi = async () => {
         Authorization: `bearer ${token}`,
       },
       method: 'POST',
+      body: JSON.stringify(dto),
     });
   } catch(e) {
     throw e;
