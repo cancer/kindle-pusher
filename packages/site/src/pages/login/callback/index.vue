@@ -2,17 +2,29 @@
 </template>
 
 <script lang="ts">
-  import { onMounted } from "@vue/composition-api";
+  import { onMounted, SetupContext } from "@vue/composition-api";
   import { createUser } from './create-user';
+  import { existUser } from './exist-user';
   import { handleRedirect } from './handle-redirect';
 
   export default {
-      setup() {
+      setup(_, context: SetupContext) {
         onMounted(async () => {
           try {
             await handleRedirect();
+          } catch(e) {
+            throw e;
+          }
+
+          try {
+            const exists = await existUser();
+            if (exists) {
+              context.root.$router.push('/');
+              return;
+            }
+
             await createUser();
-            //window.location.assign(window.location.origin)
+            context.root.$router.push('/settings');
           } catch(e) {
             throw e;
           }
