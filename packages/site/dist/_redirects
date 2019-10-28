@@ -1,2 +1,2 @@
 /* /index.html 200
-/.netlify/functions/* /api/:splat
+/api/* /.netlify/functions/:splat
