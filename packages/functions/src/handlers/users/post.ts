@@ -24,7 +24,6 @@ export const handleUsersPost = async (event: APIGatewayEvent) => {
   const user = {
     auth0Id: authToken.id,
     ...body,
-    createdAt: dateTime,
     updatedAt: dateTime,
   };
   
@@ -34,15 +33,17 @@ export const handleUsersPost = async (event: APIGatewayEvent) => {
   try {
     if (await client.query<boolean>(query.Exists(userRef))) {
       const doc = await client.query<values.Document<UserDocument>>(query.Get(userRef));
-      console.log(doc.ref)
       await client.query(query.Update(doc.ref, { data: user }))
       return {
         statusCode: 204,
         body: JSON.stringify({}),
       }
     }
-    
-    await client.query(query.Create(query.Collection('users'), { data: user }))
+  
+    await client.query(query.Create(query.Collection('users'), { data: {
+        ...user,
+        createdAt: dateTime,
+      } }))
     return {
       statusCode: 204,
       body: JSON.stringify({}),
