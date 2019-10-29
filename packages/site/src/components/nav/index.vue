@@ -24,22 +24,26 @@
 
 <script lang="ts">
   import { createComponent, onMounted, reactive } from "@vue/composition-api";
-  import { createAuthClient } from '../../shared/auth-client';
+  import { getUser, User } from "../../shared/user";
+
+  interface State {
+    user: User | null;
+  }
 
   export default createComponent({
     setup() {
-        const state = reactive({
+        const state = reactive<State>({
           user: null
         });
+
         onMounted(async () => {
-          const client = await createAuthClient();
-          let user: any;
           try {
-            state.user = await client.getUser();
+            state.user = await getUser();
           } catch(e) {
             throw e;
           }
         });
+
         return {
           state
         }

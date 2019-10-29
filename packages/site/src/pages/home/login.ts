@@ -1,5 +1,5 @@
 import { createAuthClient } from "../../shared/auth-client";
-import { existUser } from "../../shared/user/exist";
+import { existUser } from "../../shared/user/index";
 
 export const login = async () => {
   const client = await createAuthClient();
