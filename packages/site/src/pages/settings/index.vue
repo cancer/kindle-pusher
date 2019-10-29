@@ -6,12 +6,12 @@
 
     <div class="field">
       <label class="label">Incoming Webhook URL</label>
-      <b-input type="url" size="is-medium" @input="updatePushDestination($event)" :value="state.pushDestination"></b-input>
+      <input type="url" size="is-medium" @input="updatePushDestination($event)" :value="settings.pushDestination">
     </div>
 
     <div class="field">
       <label class="label">蔵書API URL</label>
-      <b-input type="url" size="is-medium" @input="updateBookShelfApi($event)" :value="state.bookShelfApi"></b-input>
+      <input type="url" size="is-medium" @input="updateBookShelfApi($event)" :value="settings.bookShelfApi">
     </div>
 
     <div class="field">
@@ -28,43 +28,50 @@
   import { fetchUser } from "./fetch-user";
   import { updateUser } from './update-user';
 
-  interface State {
+  interface Settings {
     pushDestination: string;
     bookShelfApi: string;
+  }
+
+  interface State {
     isSubmitting: boolean;
   }
 
   export default {
       setup() {
-        const state = reactive<State>({
+        const settings = reactive<Settings>({
           pushDestination: '',
           bookShelfApi: '',
-          isSubmitting: false,
         });
 
+        const state = reactive<State>({
+          isSubmitting: false,
+        })
+
         const updatePushDestination = (event: Event) => {
-          state.pushDestination = (event.target as HTMLInputElement).value;
+          settings.pushDestination = (event.target as HTMLInputElement).value;
         };
 
         const updateBookShelfApi = (event: Event) => {
-          state.bookShelfApi = (event.target as HTMLInputElement).value;
+          settings.bookShelfApi = (event.target as HTMLInputElement).value;
         };
 
         onMounted(async () => {
           const user = await fetchUser();
-          state.pushDestination = user.pushDestination;
-          state.bookShelfApi = user.bookShelfApi;
+          settings.pushDestination = user.pushDestination;
+          settings.bookShelfApi = user.bookShelfApi;
         });
 
         const submitSetting = async () => {
           state.isSubmitting = true;
           await updateUser({
-            ...state,
+            ...settings,
           })
           state.isSubmitting = false;
         }
 
         return {
+          settings,
           state,
           submitSetting,
           updatePushDestination,
