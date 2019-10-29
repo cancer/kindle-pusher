@@ -10,8 +10,13 @@
 
     </div>
     <b-dropdown aria-role="list" position="is-bottom-left">
-      <button v-if="state.user" slot="trigger" class="Nav_UserIcon" type="button">
-        <img class="Nav_UserIconImg" :src=state.user.picture :alt=state.user.name>
+      <button slot="trigger" class="Nav_UserIcon" type="button">
+        <span v-if="state.user">
+          <img class="Nav_UserIconImg" :src=state.user.picture :alt=state.user.name>
+        </span>
+        <span v-else>
+          <b-icon icon="user" size="is-medium"></b-icon>
+        </span>
       </button>
       <b-dropdown-item aria-role="listitem" has-link>
         <router-link :to="{ path: '/settings/' }">
@@ -94,6 +99,9 @@
       border-width: 4px;
       border-color: white transparent transparent transparent;
       border-style: solid;
+    }
+    .icon {
+      color: $grey;
     }
   }
   &_UserIconImg {
