@@ -10,8 +10,13 @@
 
     </div>
     <b-dropdown aria-role="list" position="is-bottom-left">
-      <button v-if="state.user" slot="trigger" class="Nav_UserIcon" type="button">
-        <img class="Nav_UserIconImg" :src=state.user.picture :alt=state.user.name>
+      <button slot="trigger" class="Nav_UserIcon" type="button">
+        <span v-if="state.user">
+          <img class="Nav_UserIconImg" :src=state.user.picture :alt=state.user.name>
+        </span>
+        <span v-else>
+          <b-icon icon="user" size="is-medium"></b-icon>
+        </span>
       </button>
       <b-dropdown-item aria-role="listitem" has-link>
         <router-link :to="{ path: '/settings/' }">
@@ -24,22 +29,26 @@
 
 <script lang="ts">
   import { createComponent, onMounted, reactive } from "@vue/composition-api";
-  import { createAuthClient } from '../../shared/auth-client';
+  import { getUser, User } from "../../shared/user";
+
+  interface State {
+    user: User | null;
+  }
 
   export default createComponent({
     setup() {
-        const state = reactive({
+        const state = reactive<State>({
           user: null
         });
+
         onMounted(async () => {
-          const client = await createAuthClient();
-          let user: any;
           try {
-            state.user = await client.getUser();
+            state.user = await getUser();
           } catch(e) {
             throw e;
           }
         });
+
         return {
           state
         }
@@ -90,6 +99,9 @@
       border-width: 4px;
       border-color: white transparent transparent transparent;
       border-style: solid;
+    }
+    .icon {
+      color: $grey;
     }
   }
   &_UserIconImg {
