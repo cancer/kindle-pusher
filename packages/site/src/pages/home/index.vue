@@ -55,28 +55,24 @@
 
 <script lang="ts">
   import { onMounted, reactive } from "@vue/composition-api";
-  import { createAuthClient } from '../../shared/auth-client';
-  import { fetchBooks } from "./fetch-books";
+  import { Book, fetchBooks } from "./fetch-books";
+  import { login } from './login';
 
   export default {
       setup() {
         const state = reactive({
-          books: [],
+          books: [] as Book[],
           visibility: 'all'
-        })
+        });
+
         onMounted(async () => {
-          const client = await createAuthClient();
-          let user: any;
+          login();
+
           try {
-            user = await client.getUser();
             const books = await fetchBooks();
             state.books = books;
           } catch(e) {
             throw e;
-          }
-
-          if (typeof user === 'undefined') {
-            client.loginWithRedirect()
           }
         });
 
