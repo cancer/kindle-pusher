@@ -34,7 +34,6 @@ export const handleUsersGet = async (event: APIGatewayEvent) => {
   
   try {
     const exists = await client.query<boolean>(query.Exists(userRef));
-    console.log(exists)
     if (!exists) {
       return {
         statusCode: 200,
