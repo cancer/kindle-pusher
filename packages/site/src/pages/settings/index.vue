@@ -4,19 +4,21 @@
     <h2 class="title  is-1">設定</h2>
     <h3 class="subtitle  is-5">新刊通知先の登録や、蔵書APIの登録を行えます</h3>
 
-    <b-field label="Incoming Webhook URL">
-      <b-input type="url" size="is-medium" @change="updatePushDestination($event)" :value="state.pushDestination"></b-input>
-    </b-field>
+    <div class="field">
+      <label class="label">Incoming Webhook URL</label>
+      <b-input type="url" size="is-medium" @input="updatePushDestination($event)" :value="state.pushDestination"></b-input>
+    </div>
 
-    <b-field label="蔵書API URL">
-      <b-input type="url" size="is-medium" @change="updateBookShelfApi($event)" :value="state.bookShelfApi"></b-input>
-    </b-field>
+    <div class="field">
+      <label class="label">蔵書API URL</label>
+      <b-input type="url" size="is-medium" @input="updateBookShelfApi($event)" :value="state.bookShelfApi"></b-input>
+    </div>
 
-    <b-field>
+    <div class="field">
       <div class="control">
         <b-button type="is-info" size="is-medium" @click="submitSetting()" :loading="state.isSubmitting">設定を保存する</b-button>
       </div>
-    </b-field>
+    </div>
 
   </div>
 </template>
