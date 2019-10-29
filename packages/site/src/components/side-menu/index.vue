@@ -5,7 +5,7 @@
         label="本棚"
         icon="th"
         tag="router-link"
-        to="/books/">
+        to="/">
       </b-menu-item>
       <b-menu-item
         label="新しく出た漫画一覧"
