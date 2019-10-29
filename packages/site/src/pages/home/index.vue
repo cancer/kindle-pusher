@@ -92,6 +92,11 @@
   gap: 15px;
   &_Item {
     position: relative;
+    transition: 0.5s filter $easing;
+    &.-ignored {
+      filter: grayscale(1);
+      opacity: 0.8;
+    }
     // "通知設定あり"のみを表示：通知設定あり要素を表示
     .-notOnlyIgnored &:not(.-ignored) {
       display: block;
@@ -114,9 +119,6 @@
     &:hover {
       color: $cyan;
     }
-    .-ignored & {
-      color: $grey-lighter;
-    }
   }
   &_Title {
     display: block;
@@ -129,9 +131,6 @@
     width: 100%;
     height: 150px;
     object-fit: cover;
-    .-ignored & {
-      opacity: 0.1;
-    }
   }
   &_Button {
     -webkit-appearance: none;
@@ -148,12 +147,6 @@
     transition: 0.2s color $easing;
     &:hover {
       color: lighten($yellow, 20%);
-    }
-    .-ignored & {
-      color: $white;
-      &:hover {
-        color: lighten($yellow, 20%);
-      }
     }
     .icon {
       font-size: 20px;
