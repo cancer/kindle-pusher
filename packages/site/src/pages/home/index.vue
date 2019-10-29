@@ -66,7 +66,7 @@
         });
 
         onMounted(async () => {
-          login();
+          await login();
 
           try {
             const books = await fetchBooks();
