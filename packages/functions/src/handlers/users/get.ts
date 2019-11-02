@@ -51,12 +51,15 @@ export const handleUsersGet = async (event: APIGatewayEvent) => {
       }),
     }
   } catch(e) {
+    Error
     console.log(e)
     return {
       statusCode: 500,
       body: JSON.stringify({
         error: {
-          ...e,
+          name: e.name,
+          message: e.message,
+          stack: e.stack,
           ping: await client.ping('read'),
         }
       })
