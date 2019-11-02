@@ -1,1 +1,1 @@
-export const basePath = '/api';
+export const basePath = '/.netlify/functions';
