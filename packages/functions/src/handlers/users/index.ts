@@ -3,13 +3,23 @@ import { injectable } from "inversify";
 import { makeAuthToken } from "../../domains/auth-token";
 import { AuthorizationError } from "../../domains/error/authorization";
 import { HttpMethodNotAllowedError } from "../../domains/error/method-not-allowed";
-import { makeErrorResponse } from "../../shared/make-error-response";
-import { handleUsersPost } from "./post";
+import { makeErrorResponse } from "../../lib/response/make-error-response";
+import { makeNoContentResponse } from "../../lib/response/make-no-content-response";
+import { getToken } from "../../shared/get-token";
+import { UsersCommands } from "./commands";
 import { UsersQueries } from "./queries";
+
+interface UsersPostRequestBody {
+  bookshelfApi: string;
+  pushDestination: string;
+}
 
 @injectable()
 export class UsersHandler {
-  constructor(private queries: UsersQueries) {}
+  constructor(
+    private readonly queries: UsersQueries,
+    private readonly commands: UsersCommands,
+  ) {}
   
   async handle(event: APIGatewayEvent): Promise<APIGatewayProxyResult> {
     try {
@@ -46,12 +56,21 @@ export class UsersHandler {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        user: await this.queries.getUser(authToken),
+        user: await this.queries.getUser(authToken.id),
       }),
     };
   }
   
   private async handlePost(event: APIGatewayEvent): Promise<APIGatewayProxyResult> {
-    return await handleUsersPost(event)
+    const authToken = await makeAuthToken(getToken(event.headers['authorization']))
+    
+    const body: UsersPostRequestBody = event.body ? JSON.parse(event.body) : {};
+    
+    this.commands.putUser({
+      userId: authToken.id,
+      ...body,
+    });
+  
+    return makeNoContentResponse();
   }
 }

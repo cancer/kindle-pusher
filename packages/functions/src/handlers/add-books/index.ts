@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 import { UserDocument } from "../../lib/db/user";
 import { FaunadbProvider } from "../../shared/faunadb-provider";
 import { container } from "../../shared/inversify.config";
-import { makeErrorResponse } from "../../shared/make-error-response";
+import { makeErrorResponse } from "../../lib/response/make-error-response";
 import fetch from 'node-fetch';
 
 export interface Lambda<T> {

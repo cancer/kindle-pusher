@@ -5,7 +5,7 @@ import { makeAuthToken } from "../../domains/auth-token";
 import { AuthToken } from "../../domains/auth-token/auth-token";
 import { FaunadbProvider } from "../../shared/faunadb-provider";
 import { container } from "../../shared/inversify.config";
-import { makeErrorResponse } from "../../shared/make-error-response";
+import { makeErrorResponse } from "../../lib/response/make-error-response";
 import { Lambda } from "../add-books";
 
 interface BookDocument {

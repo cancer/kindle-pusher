@@ -1,6 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { handleBookshelfGet } from "./handlers/bookshelf/get";
-import { makeErrorResponse } from "./shared/make-error-response";
+import { makeErrorResponse } from "./lib/response/make-error-response";
 
 export const handler = (event: APIGatewayEvent) => {
   if (event.httpMethod === 'GET') {
