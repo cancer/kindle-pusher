@@ -8,10 +8,6 @@ export class UsersQueries {
   constructor(private usersRepo: UsersRepository) {}
   
   async getUser(authToken: AuthToken): Promise<User | null> {
-    if (!await this.usersRepo.exists(authToken)) {
-      return null;
-    }
-    
     return this.usersRepo.get(authToken);
   }
 }
