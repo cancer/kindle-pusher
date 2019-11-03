@@ -61,9 +61,7 @@ typings/
 .next
 
 # Build output
-packages/functions/dist/
-packages/site/dist/*
-!packages/site/dist/_redirects
+dist
 .cache
 
 # Editor settings
