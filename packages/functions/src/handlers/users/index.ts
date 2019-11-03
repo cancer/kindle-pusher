@@ -3,6 +3,7 @@ import { injectable } from "inversify";
 import { makeAuthToken } from "../../domains/auth-token";
 import { AuthorizationError } from "../../domains/error/authorization";
 import { HttpMethodNotAllowedError } from "../../domains/error/method-not-allowed";
+import { getStatusCodeByError } from "../../lib/response/get-status-code-by-error";
 import { makeErrorResponse } from "../../lib/response/make-error-response";
 import { makeNoContentResponse } from "../../lib/response/make-no-content-response";
 import { getToken } from "../../shared/get-token";
@@ -34,15 +35,11 @@ export class UsersHandler {
       throw new HttpMethodNotAllowedError(event.httpMethod);
     } catch(e) {
       console.error(e);
-      
-      switch(true) {
-        case e instanceof AuthorizationError:
-          return makeErrorResponse(401, e);
-        case e instanceof HttpMethodNotAllowedError:
-          return makeErrorResponse(405, e);
-        default:
-          return makeErrorResponse(500, e);
-      }
+  
+      return makeErrorResponse(
+        getStatusCodeByError(e),
+        e,
+      );
     }
   }
   

@@ -5,6 +5,7 @@ import { injectable } from "inversify";
 import { makeAuthToken } from "../../domains/auth-token";
 import { AuthToken } from "../../domains/auth-token/auth-token";
 import { HttpMethodNotAllowedError } from "../../domains/error/method-not-allowed";
+import { getStatusCodeByError } from "../../lib/response/get-status-code-by-error";
 import { FaunadbProvider } from "../../shared/faunadb-provider";
 import { container } from "../../shared/inversify.config";
 import { makeErrorResponse } from "../../lib/response/make-error-response";
@@ -79,12 +80,12 @@ export class BooksHandler {
       
       throw new HttpMethodNotAllowedError(event.httpMethod);
     } catch(e) {
-      switch (true) {
-        case e instanceof HttpMethodNotAllowedError:
-          return makeErrorResponse(405, e);
-        default:
-          return makeErrorResponse(500, e);
-      }
+      console.error(e);
+      
+      return makeErrorResponse(
+        getStatusCodeByError(e),
+        e,
+      );
     }
   
   }
