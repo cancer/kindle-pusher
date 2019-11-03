@@ -1022,7 +1022,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node-fetch@^2.1.6":
+"@types/node-fetch@^2.1.6", "@types/node-fetch@^2.5.2":
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.2.tgz#76906dea5b3d6901e50e63e15249c9bcd6e9676e"
   dependencies:

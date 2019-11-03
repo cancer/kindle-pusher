@@ -5,7 +5,7 @@
   "scripts": {
     "build": "yarn workspace @kindle-pusher/site run build && yarn workspace @kindle-pusher/functions run build",
     "dev:site": "yarn workspace @kindle-pusher/site start",
-    "dev:fundtions": "yarn workspace @kindle-pusher/functions build",
+    "dev:fundtions": "yarn workspace @kindle-pusher/functions start",
     "start": "run-p dev:*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
