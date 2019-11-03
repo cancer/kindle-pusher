@@ -1,8 +1,10 @@
-import { APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 import { parse } from "cookie";
 import { query, values } from "faunadb";
+import { injectable } from "inversify";
 import { makeAuthToken } from "../../domains/auth-token";
 import { AuthToken } from "../../domains/auth-token/auth-token";
+import { HttpMethodNotAllowedError } from "../../domains/error/method-not-allowed";
 import { FaunadbProvider } from "../../shared/faunadb-provider";
 import { container } from "../../shared/inversify.config";
 import { makeErrorResponse } from "../../lib/response/make-error-response";
@@ -23,7 +25,7 @@ interface BookshelfDocument {
   productUrl: string;
 }
 
-export const handleBooksGet = async (event: APIGatewayEvent) => {
+const handleBooksGet = async (event: APIGatewayEvent) => {
   let authToken: AuthToken;
   try {
     if (event.headers['cookie'] === null) {
@@ -63,4 +65,31 @@ export const handleBooksGet = async (event: APIGatewayEvent) => {
     statusCode: 200,
     body: JSON.stringify(books.map(v => v.data)),
   };
+}
+
+@injectable()
+export class BooksHandler {
+  constructor() {}
+  
+  async handle(event: APIGatewayEvent): Promise<APIGatewayProxyResult> {
+    try {
+      if (event.httpMethod === 'GET') {
+        return await this.handleGet(event);
+      }
+      
+      throw new HttpMethodNotAllowedError(event.httpMethod);
+    } catch(e) {
+      switch (true) {
+        case e instanceof HttpMethodNotAllowedError:
+          return makeErrorResponse(405, e);
+        default:
+          return makeErrorResponse(500, e);
+      }
+    }
+  
+  }
+  
+  private async handleGet(event: APIGatewayEvent): Promise<APIGatewayProxyResult> {
+    return handleBooksGet(event);
+  }
 }
