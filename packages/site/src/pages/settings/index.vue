@@ -6,12 +6,12 @@
 
     <div class="field">
       <label class="label">Incoming Webhook URL</label>
-      <input type="url" size="is-medium" @input="updatePushDestination($event)" :value="settings.pushDestination">
+      <input class="input  is-medium" type="url" @input="updatePushDestination($event)" :value="settings.pushDestination">
     </div>
 
     <div class="field">
       <label class="label">蔵書API URL</label>
-      <input type="url" size="is-medium" @input="updateBookShelfApi($event)" :value="settings.bookShelfApi">
+      <input class="input  is-medium" type="url" @input="updateBookShelfApi($event)" :value="settings.bookShelfApi">
     </div>
 
     <div class="field">
