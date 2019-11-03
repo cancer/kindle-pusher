@@ -1,4 +1,4 @@
-import { basePath } from "../../shared/apis/base-path";
+import { booksGetApi } from "../../shared/apis/books/get";
 
 export interface Book {
   asin: string;
@@ -8,6 +8,5 @@ export interface Book {
 }
 
 export const fetchBooks = async (): Promise<Book[]> => {
-  const res = await fetch(`${basePath}/books`);
-  return res.json();
+  return booksGetApi();
 }

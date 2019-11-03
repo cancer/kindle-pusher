@@ -40,18 +40,16 @@ const verifyToken = (idToken: string): Promise<object | string> => {
   });
 };
 
-const error = new AuthorizationError();
-
 export const makeAuthToken = async (idToken: string | null | undefined): Promise<AuthToken> => {
   if (idToken === null || typeof idToken === 'undefined') {
-    throw error;
+    throw new AuthorizationError();
   }
 
   try {
     const authToken = new AuthToken(await verifyToken(idToken));
     
     if (!authToken.isVerified) {
-      throw error;
+      throw new AuthorizationError('Token is not verified.');
     }
     
     return authToken;

@@ -7,7 +7,7 @@ import { container } from "../../shared/inversify.config";
 import { makeErrorResponse } from "../../lib/response/make-error-response";
 import fetch from 'node-fetch';
 
-export interface Lambda<T> {
+export interface LambdaResult<T> {
   data: T[];
 }
 
@@ -103,7 +103,7 @@ const createBooks = async (book: BookData) => {
 const getUserBookData = async (): Promise<BookData[]> => {
   const client = container.get(FaunadbProvider).provide();
   console.log('--- Get user bookshelf apis')
-  const users = await client.query<Lambda<values.Document<UserDocument>>>(
+  const users = await client.query<LambdaResult<values.Document<UserDocument>>>(
     query.Map(
       query.Paginate(
         query.Match(

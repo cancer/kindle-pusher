@@ -1,5 +1,7 @@
+import { injectable } from "inversify";
 import { PutUserInput, UsersRepository } from "../../domains/user/repository";
 
+@injectable()
 export class UsersCommands {
   constructor(private readonly usersRepo: UsersRepository) {}
   
