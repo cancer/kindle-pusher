@@ -17,6 +17,16 @@ module.exports = {
     contentBase: './dist',
     watchContentBase: true,
     port: 3000,
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/.*$/, to: '/index.html'}
+      ],
+    },
+    proxy: {
+      '/.netlify/functions/*': {
+        target: '/.netlify/functions/',
+      },
+    }
   },
   devtool: 'source-map',
   resolve: {

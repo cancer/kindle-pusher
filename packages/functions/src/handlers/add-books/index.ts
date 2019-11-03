@@ -65,7 +65,9 @@ const createBookshelf = async (book: BookData) => {
   const bookRef = query.Match(query.Index('bookshelf_by_asin'), book.asin);
   const dateTime = DateTime.local().toISO();
   
+  console.log(`${book.asin} ${(await client.query<boolean>(query.Exists(bookRef))) ? 'has been registered.' : 'is not registered.'}`);
   if (!await client.query<boolean>(query.Exists(bookRef))) {
+    console.log(`--- Create bookshelf: ${book.asin}`);
     client.query(query.Create(query.Collection('bookshelf'), {
       data: {
         asin: book.asin,
@@ -85,6 +87,7 @@ const createBooks = async (book: BookData) => {
   const dateTime = DateTime.local().toISO();
   
   if (!await client.query<boolean>(query.Exists(bookRef))) {
+    console.log(`--- Create book: ${book.asin} by ${book.user}`);
     client.query(query.Create(query.Collection('books'), {
       data: {
         user: book.user,
@@ -97,33 +100,40 @@ const createBooks = async (book: BookData) => {
   }
 };
 
-export const handleAddBooksPost = async () => {
+const getUserBookData = async (): Promise<BookData[]> => {
   const client = container.get(FaunadbProvider).provide();
+  console.log('--- Get user bookshelf apis')
+  const users = await client.query<Lambda<values.Document<UserDocument>>>(
+    query.Map(
+      query.Paginate(
+        query.Match(
+          query.Index('all_users'),
+        )
+      ),
+      query.Lambda('X', query.Get(query.Var('X'))),
+    )
+  );
+  
+  return getBooks(
+    users.data.map(user => {
+      return user.data;
+    }).filter(v => !!v.bookShelfApi)
+  );
+}
+
+export const handleAddBooksPost = async () => {
   try {
-    const users = await client.query<Lambda<values.Document<UserDocument>>>(
-      query.Map(
-        query.Paginate(
-          query.Match(
-            query.Index('all_users'),
-          )
-        ),
-        query.Lambda('X', query.Get(query.Var('X'))),
-      )
-    );
-    
-    const books = await getBooks(
-      users.data.map(user => {
-        return user.data;
-      }).filter(v => !!v.bookShelfApi)
-    );
-    
+    const books = await getUserBookData();
     books.forEach(async book => {
       await createBookshelf(book);
       await createBooks(book);
-    })
+    });
     
     return {
       statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
       body: JSON.stringify({
         result: books,
       })
