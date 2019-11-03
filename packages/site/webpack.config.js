@@ -1,10 +1,21 @@
 const { resolve } = require('path');
+const { EnvironmentPlugin } = require('webpack');
+const Dotenv = require('dotenv-webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 
 const isDev = process.env.NODE_ENV === 'development';
+
+const getEnvironmentVariablesDefinition = () => {
+  if (process.env.NETLIFY === true) {
+    return new EnvironmentPlugin(['AUTH0_CLIENT_ID', 'AUTH0_DOMAIN', 'AUTH0_JWKS_URI', 'AUTH0_REDIRECT_URI', 'FAUNADB_SERVER_SECRET']);
+  }
+
+  return new Dotenv({
+    path: './src/.env',
+  });
+}
 
 module.exports = {
   mode: isDev ? 'develop' : 'production',
@@ -71,8 +82,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: resolve('./src/index.html'),
     }),
-    new Dotenv({
-      path: './src/.env',
-    }),
+    getEnvironmentVariablesDefinition(),
   ],
 };
