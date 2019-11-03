@@ -2,6 +2,7 @@ import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 import { injectable } from "inversify";
 import { makeAuthToken } from "../../domains/auth-token";
 import { AuthorizationError } from "../../domains/error/authorization";
+import { HttpMethodNotAllowedError } from "../../domains/error/method-not-allowed";
 import { makeErrorResponse } from "../../shared/make-error-response";
 import { handleUsersPost } from "./post";
 import { UsersQueries } from "./queries";
@@ -19,18 +20,20 @@ export class UsersHandler {
       if (event.httpMethod === 'GET') {
         return await this.handleGet(event);
       }
+      
+      throw new HttpMethodNotAllowedError(event.httpMethod);
     } catch(e) {
       console.error(e);
       
       switch(true) {
         case e instanceof AuthorizationError:
           return makeErrorResponse(401, e);
+        case e instanceof HttpMethodNotAllowedError:
+          return makeErrorResponse(405, e);
         default:
           return makeErrorResponse(500, e);
       }
     }
-  
-    return makeErrorResponse(405, new Error(`${event.httpMethod} is not allowed.`));
   }
   
   private async handleGet(event: APIGatewayEvent): Promise<APIGatewayProxyResult> {
