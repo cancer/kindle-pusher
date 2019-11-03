@@ -4,11 +4,11 @@ import { query, values } from "faunadb";
 import { DateTime } from "luxon";
 import { makeAuthToken } from "../../domains/auth-token";
 import { AuthToken } from "../../domains/auth-token/auth-token";
+import { UserDocument } from "../../lib/db/user";
 import { FaunadbProvider } from "../../shared/faunadb-provider";
 import { getToken } from "../../shared/get-token";
 import { container } from "../../shared/inversify.config";
 import { makeErrorResponse } from "../../shared/make-error-response";
-import { UserDocument } from "./get";
 
 export const handleUsersPost = async (event: APIGatewayEvent) => {
   let authToken: AuthToken;
