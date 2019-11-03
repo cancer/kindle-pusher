@@ -9,3 +9,20 @@
   targetPort = 3000
   publish = "packages/site/dist"
   functions = "packages/functions/dist"
+
+[[redirects]]
+  from = '/api/*'
+  to = '/.netlify/functions/:splat'
+  status = 200
+  force = true
+
+[[redirects]]
+  from = '/*/main.js'
+  to = '/main.js'
+  status = 200
+  force = true
+
+[[redirects]]
+  from = '/*'
+  to = '/'
+  status = 200
