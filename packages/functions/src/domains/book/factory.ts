@@ -1,7 +1,7 @@
 import { values } from "faunadb";
-import { LambdaResult } from "../../handlers/add-books";
 import { BookDocument } from "../../lib/db/book";
 import { BookshelfDocument } from "../../lib/db/bookshelf";
+import { LambdaResult } from "../../lib/db/lambda-result";
 import { Book } from "./index";
 
 export const makeBooks = (books: values.Document<BookshelfDocument>[], userOwnedBooks: LambdaResult<values.Document<BookDocument>>): Book[] => {

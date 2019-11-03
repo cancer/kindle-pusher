@@ -1,15 +1,11 @@
-import { APIGatewayEvent } from "aws-lambda";
 import { query, values } from "faunadb";
 import { DateTime } from "luxon";
+import fetch from 'node-fetch';
+import { LambdaResult } from "../../lib/db/lambda-result";
 import { UserDocument } from "../../lib/db/user";
+import { makeErrorResponse } from "../../lib/response/make-error-response";
 import { FaunadbProvider } from "../../shared/faunadb-provider";
 import { container } from "../../shared/inversify.config";
-import { makeErrorResponse } from "../../lib/response/make-error-response";
-import fetch from 'node-fetch';
-
-export interface LambdaResult<T> {
-  data: T[];
-}
 
 interface Book {
   acquisitionDate: number;
