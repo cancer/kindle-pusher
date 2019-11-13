@@ -1,8 +1,12 @@
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 import { query, values } from "faunadb";
+import { injectable } from "inversify";
 import { DateTime } from "luxon";
 import fetch from 'node-fetch';
+import { HttpMethodNotAllowedError } from "../../domains/error/method-not-allowed";
 import { LambdaResult } from "../../lib/db/lambda-result";
 import { UserDocument } from "../../lib/db/user";
+import { getStatusCodeByError } from "../../lib/response/get-status-code-by-error";
 import { makeErrorResponse } from "../../lib/response/make-error-response";
 import { FaunadbProvider } from "../../shared/faunadb-provider";
 import { container } from "../../shared/inversify.config";
@@ -136,6 +140,30 @@ export const handleAddBooksPost = async () => {
     }
   } catch(e) {
     console.error(e);
-    makeErrorResponse(500, e);
+    return makeErrorResponse(500, e);
+  }
+}
+
+@injectable()
+export class AddBooksHandler {
+  async handle(ev: APIGatewayEvent): Promise<APIGatewayProxyResult> {
+    try {
+      if (ev.httpMethod === 'POST') {
+        return await this.handlePost();
+      }
+      
+      throw new HttpMethodNotAllowedError(ev.httpMethod);
+    } catch(e) {
+      console.error(e);
+  
+      return makeErrorResponse(
+        getStatusCodeByError(e),
+        e,
+      );
+    }
+  }
+  
+  private handlePost(): Promise<APIGatewayProxyResult> {
+    return handleAddBooksPost()
   }
 }

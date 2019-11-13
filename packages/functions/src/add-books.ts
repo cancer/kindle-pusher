@@ -1,11 +1,7 @@
-import { APIGatewayEvent } from "aws-lambda";
-import { handleAddBooksPost } from "./handlers/add-books";
-import { makeErrorResponse } from "./lib/response/make-error-response";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
+import { AddBooksHandler } from "./handlers/add-books";
+import { container } from "./shared/inversify.config";
 
-export const handler = (event: APIGatewayEvent) => {
-  if (event.httpMethod === 'POST') {
-    return handleAddBooksPost();
-  }
-  
-  return makeErrorResponse(405, new Error(`${event.httpMethod} is not allowed.`));
+export const handler = (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+  return container.get(AddBooksHandler).handle(event);
 };
