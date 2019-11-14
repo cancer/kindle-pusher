@@ -1,9 +1,10 @@
 import { Expr, query, values } from "faunadb";
 import { injectable } from "inversify";
 import { DateTime } from "luxon";
+import { LambdaResult } from "../../lib/db/lambda-result";
 import { UserDocument } from "../../lib/db/user";
 import { FaunadbProvider } from "../../shared/faunadb-provider";
-import { makeUser } from "./factory";
+import { makeUser, makeUsers } from "./factory";
 import { User } from "./index";
 
 export interface PutUserInput {
@@ -25,6 +26,23 @@ export class UsersRepository {
   
       const doc = await this.getUserDocument(userRef);
       return makeUser(doc);
+    } catch(e) {
+      throw e;
+    }
+  }
+  
+  async getAll(): Promise<User[]> {
+    const usersRef = query.Match( query.Index('all_users'));
+    
+    try {
+      const docs = await this.provider.query<LambdaResult<values.Document<UserDocument>>>(
+        query.Map(
+          query.Paginate(usersRef),
+          query.Lambda('X', query.Get(query.Var('X'))),
+        )
+      );
+      
+      return makeUsers(docs);
     } catch(e) {
       throw e;
     }

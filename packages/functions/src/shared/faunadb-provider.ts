@@ -1,4 +1,4 @@
-import { Client, Expr } from "faunadb";
+import { Client, Expr, query } from "faunadb";
 import { inject, injectable } from "inversify";
 import { container } from "./inversify.config";
 
@@ -30,5 +30,9 @@ export class FaunadbProvider {
   
   query<T>(ref: Expr): Promise<T> {
     return this.client.query(ref);
+  }
+  
+  exists(ref: Expr): Promise<boolean> {
+    return this.query<boolean>(query.Exists(ref));
   }
 }

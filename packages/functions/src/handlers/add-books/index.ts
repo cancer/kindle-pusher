@@ -4,10 +4,14 @@ import { HttpMethodNotAllowedError } from "../../domains/error/method-not-allowe
 import { getStatusCodeByError } from "../../lib/response/get-status-code-by-error";
 import { makeErrorResponse } from "../../lib/response/make-error-response";
 import { AddBooksCommands } from "./commands";
+import { AddBooksQueries } from "./queries";
 
 @injectable()
 export class AddBooksHandler {
-  constructor(private readonly commands: AddBooksCommands) {}
+  constructor(
+    private readonly queries: AddBooksQueries,
+    private readonly commands: AddBooksCommands,
+  ) {}
   
   async handle(ev: APIGatewayEvent): Promise<APIGatewayProxyResult> {
     try {
@@ -28,7 +32,8 @@ export class AddBooksHandler {
   
   private async handlePost(): Promise<APIGatewayProxyResult> {
     try {
-      await this.commands.addBooks();
+      const books = await this.queries.getLatestUserOwnedBooks();
+      await this.commands.addBooks(books);
       
       return {
         statusCode: 204,

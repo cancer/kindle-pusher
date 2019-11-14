@@ -1,4 +1,4 @@
-export interface BookDocument {
+export interface UserOwnedBookDocument {
   asin: string
   user: string;
   ignored: boolean;
