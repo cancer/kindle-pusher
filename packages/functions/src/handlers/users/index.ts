@@ -59,7 +59,8 @@ export class UsersHandler {
   }
   
   private async handlePost(event: APIGatewayEvent): Promise<APIGatewayProxyResult> {
-    const authToken = await makeAuthToken(getToken(event.headers?.authorization))
+    const authorization = event.headers ? event.headers.authorization : '';
+    const authToken = await makeAuthToken(getToken(authorization))
     
     const body: UsersPostRequestBody = event.body ? JSON.parse(event.body) : {};
     
