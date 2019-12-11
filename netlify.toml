@@ -12,9 +12,10 @@
 
 [[redirects]]
   from = '/api/*'
-  to = '/.netlify/functions/:splat'
+  to = '/.netlify/functions/:splat?authorization=:authorization'
   status = 200
   force = true
+  query = { authorization = ":authorization" }
 
 [[redirects]]
   from = '/*/main.js'

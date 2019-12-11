@@ -1,8 +1,7 @@
 import * as dotenv from 'dotenv';
 import { verify } from 'jsonwebtoken';
+import { AuthorizationError } from "../error/authorization";
 import { AuthToken } from './auth-token';
-import { AuthTokenUnspecified } from './auth-token-unspecified';
-import { InvalidAuthtoken } from './invalid-auth-token';
 import jwksRsa from 'jwks-rsa';
 
 dotenv.config();
@@ -41,15 +40,20 @@ const verifyToken = (idToken: string): Promise<object | string> => {
   });
 };
 
-export const makeAuthToken = async (idToken: string | null): Promise<AuthToken> => {
-  if (idToken === null) {
-    return new AuthTokenUnspecified();
+export const makeAuthToken = async (idToken: string | null | undefined): Promise<AuthToken> => {
+  if (idToken === null || typeof idToken === 'undefined') {
+    throw new AuthorizationError();
   }
 
   try {
-    const payload = await verifyToken(idToken);
-    return new AuthToken(payload);
+    const authToken = new AuthToken(await verifyToken(idToken));
+    
+    if (!authToken.isVerified) {
+      throw new AuthorizationError('Token is not verified.');
+    }
+    
+    return authToken;
   } catch (e) {
-    return new InvalidAuthtoken(e);
+    throw new AuthorizationError(e.message);
   }
 };
