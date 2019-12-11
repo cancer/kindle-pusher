@@ -1,6 +1,7 @@
 import { injectable } from "inversify";
 import fetch from "node-fetch";
 import { UserOwnedBookshelfApiResponse } from "./response";
+import "reflect-metadata";
 
 @injectable()
 export class UserOwnedBookshelfApi {
